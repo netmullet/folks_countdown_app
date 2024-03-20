@@ -19,6 +19,7 @@ class _InputPageState extends State<InputPage> {
   int fathersAge = 0;
   int frequency = 0;
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
