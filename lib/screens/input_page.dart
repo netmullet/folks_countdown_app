@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:your_parents/components/reusable_form.dart';
 import 'package:your_parents/components/country_form.dart';
+import 'package:your_parents/screens/result_page.dart';
 
 class InputPage extends StatefulWidget {
   @override
@@ -19,6 +20,14 @@ class _InputPageState extends State<InputPage> {
   int fathersAge = 0;
   int frequency = 0;
 
+  int calculateDaysLeft() {
+    if (averageLifespans.containsKey(selectedCountry)) {
+      int daysLeft = averageLifespans[selectedCountry]! - ((mothersAge + fathersAge) / 2).round();
+      return frequency * daysLeft;
+    } else {
+      return 0;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +62,13 @@ class _InputPageState extends State<InputPage> {
           ),
           Column(
             children: [
-              Text('母親の年齢は？'),
+              const Text('母の年齢を入力してください'),
               Container(
                 padding: EdgeInsets.all(20.0),
                 child: TextField(
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     filled: true,
                   ),
                   onChanged: (String value) {
@@ -69,13 +78,13 @@ class _InputPageState extends State<InputPage> {
                   },
                 ),
               ),
-              Text('父親の年齢は？'),
+              const Text('父の年齢を入力してください'),
               Container(
                 padding: EdgeInsets.all(20.0),
                 child: TextField(
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     filled: true,
                   ),
                   onChanged: (String value) {
@@ -103,7 +112,18 @@ class _InputPageState extends State<InputPage> {
               ),
             ],
           ),
-          ElevatedButton(onPressed: () {}, child: Text('計算する')),
+          ElevatedButton(
+              onPressed: () {
+
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResultPage(result: calculateDaysLeft().toString()),
+                  ),
+                );
+              },
+              child: const Text('計算する')),
         ],
       ),
     );
